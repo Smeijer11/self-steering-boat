@@ -4,6 +4,7 @@
 # It is designed to allow for debugging of the steering software
 # without the need for on water testing.
 
+from array import array
 import math
 import numpy as np
 
@@ -21,10 +22,15 @@ class Boat:
         self.T = T  # Ditto
         
     
-    def step(self, delta):
+    def step(self, delta, timeStep):
         self.delta = delta
-        self.pos = 
-        self.theta = 
-        self.thetaDot = 
-        self.thetaDotDot = 
+        xDot = self.V*np.cos(self.theta)
+        yDot = self.V*np.sin(self.theta)
+        xDelta = xDot*timeStep
+        yDelta = yDot*timeStep
+        self.pos = self.pos+np.array([xDelta, yDelta])
+        self.theta = self.theta+self.thetaDot*timeStep
+        thetaDotNew = self.T * delta - self.R * self.thetaDotDot
+        self.thetaDotDot = ((self.T * delta) - self.thetaDot)/self.R 
+        self.thetaDot = thetaDotNew
         
